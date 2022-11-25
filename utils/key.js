@@ -1,5 +1,5 @@
 const { NODE_ENV, JWT_SECRET } = process.env;
 
-const TOKEN_ENCRYPT_KEY = NODE_ENV === 'production' ? JWT_SECRET : '3411375c14aa8e81755ab81967a48326';
+const TOKEN_ENCRYPT_KEY = NODE_ENV === 'production' ? JWT_SECRET : 'cdff8a7919967465c3bb7153ec3870c9';
 
 module.exports = TOKEN_ENCRYPT_KEY;

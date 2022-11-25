@@ -1,16 +1,16 @@
-require("dotenv").config();
-const mongoose = require("mongoose");
+require('dotenv').config();
+const mongoose = require('mongoose');
 
-const { errors } = require("celebrate");
+const { errors } = require('celebrate');
 
-mongoose.connect("mongodb://127.0.0.1:27017/moovies");
+mongoose.connect('mongodb://127.0.0.1:27017/moviesdb');
 
-const express = require("express");
-const cookieParser = require("cookie-parser");
-const { requestLogger, errorLogger } = require("./middlewares/logger");
-const router = require("./routes/index");
-const errorHandler = require("./middlewares/errorHandler");
-const verifyOrigin = require("./middlewares/verifyOrigin");
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+const router = require('./routes/index');
+const errorHandler = require('./middlewares/errorHandler');
+const verifyOrigin = require('./middlewares/verifyOrigin');
 
 const { PORT = 3001 } = process.env;
 const app = express();

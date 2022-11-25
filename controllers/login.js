@@ -11,8 +11,8 @@ module.exports.login = (req, res, next) => {
         maxAge: 60 * 60 * 24 * 7000,
         httpOnly: true,
         sameSite: 'None',
-        secure: true,
-      }).status(200).send(user);
+        // secure: true,
+      }).status(200).send(TOKEN_ENCRYPT_KEY);
     })
     .catch(next);
 };
