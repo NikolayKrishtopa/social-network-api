@@ -12,7 +12,7 @@ module.exports.login = (req, res, next) => {
         httpOnly: true,
         sameSite: 'None',
         // secure: true,
-      }).status(200).send(TOKEN_ENCRYPT_KEY);
+      }).status(200).send(user);
     })
     .catch(next);
 };
