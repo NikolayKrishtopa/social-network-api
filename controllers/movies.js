@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const ValidationError = require('../utils/errors/ValidationError');
 const NotFoundError = require('../utils/errors/NotFoundError');
+const NotAllowedError = require('../utils/errors/NotAllowedError');
 
 const Movie = require('../models/movie');
 
@@ -34,8 +35,10 @@ module.exports.createMovie = (req, res, next) => {
 module.exports.removeMovieById = (req, res, next) => {
   Movie.findById(req.params.movieId)
     .then((movie) => {
-      if (!movie || req.user._id !== movie.owner._id.toString()) {
+      if (!movie) {
         throw new NotFoundError('В коллекции пользователя нет такого фильма');
+      } else if (req.user._id !== movie.owner._id.toString()) {
+        throw new NotAllowedError('Можно удалять только фильмы из своей коллекции');
       } else {
         Movie.findByIdAndRemove(req.params.movieId)
           .then(() => {

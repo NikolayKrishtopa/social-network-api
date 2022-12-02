@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const ValidationError = require('../utils/errors/ValidationError');
 const NotFoundError = require('../utils/errors/NotFoundError');
-const UserExistError = require('../utils/errors/UserExistError');
+const UserExistError = require('../utils/errors/ExistError');
 
 const User = require('../models/user');
 
