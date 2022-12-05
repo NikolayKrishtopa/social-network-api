@@ -9,11 +9,12 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes/index');
 const errorHandler = require('./middlewares/errorHandler');
 const verifyOrigin = require('./middlewares/verifyOrigin');
+const DB_ADDRESS = require('./utils/DB_ADDRESS');
 
-const { PORT = 3001 } = process.env;
+const { PORT = 3001, mongo = DB_ADDRESS } = process.env;
 const app = express();
 
-mongoose.connect('mongodb://127.0.0.1:27017/moviesdb');
+mongoose.connect(mongo);
 
 app.use(requestLogger);
 

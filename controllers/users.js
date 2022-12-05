@@ -7,6 +7,7 @@ const UserExistError = require('../utils/errors/ExistError');
 const User = require('../models/user');
 
 const { patchRequestOptions } = require('../utils/utils');
+const ERRORS_MESSAGES = require('../utils/ERRORS_MESSAGES');
 
 module.exports.createUser = (req, res, next) => {
   const {
@@ -19,9 +20,9 @@ module.exports.createUser = (req, res, next) => {
     .then((user) => res.send(user))
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
-        next(new ValidationError('Проверьте правильность введённых данных'));
+        next(new ValidationError(ERRORS_MESSAGES.VALIDATION));
       } else if (err.code === 11000) {
-        next(new UserExistError('Пользователь с такими данными существует'));
+        next(new UserExistError(ERRORS_MESSAGES.USER_EXISTS));
       } else {
         next(err);
       }
@@ -33,15 +34,15 @@ module.exports.updateProfile = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { name, email }, patchRequestOptions)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Проверьте правильность введённых данных');
+        throw new NotFoundError(ERRORS_MESSAGES.CHECK_REQ_DATA);
       }
       res.send(user);
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
-        next(new ValidationError('Проверьте правильность введённых данных'));
+        next(new ValidationError(ERRORS_MESSAGES.CHECK_REQ_DATA));
       } else if (err instanceof mongoose.Error.CastError) {
-        next(new ValidationError('По вашему запросу ничего не найдено'));
+        next(new ValidationError(ERRORS_MESSAGES.NOT_FOUND));
       } else {
         next(err);
       }

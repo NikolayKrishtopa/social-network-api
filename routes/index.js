@@ -6,6 +6,7 @@ const { login, logout } = require('../controllers/login');
 const { createUser } = require('../controllers/users');
 const auth = require('../middlewares/auth');
 const NotFoundError = require('../utils/errors/NotFoundError');
+const ERRORS_MESSAGES = require('../utils/ERRORS_MESSAGES');
 
 router.post('/signin', userBodyValidator, login);
 router.delete('/signout', logout);
@@ -15,7 +16,7 @@ router.use(auth);
 router.use('/movies', routerMovies);
 router.use('/users', routerUsers);
 router.use('*', () => {
-  throw new NotFoundError('По вашему запросу ничего не найдено');
+  throw new NotFoundError(ERRORS_MESSAGES.NOT_FOUND);
 });
 
 module.exports = router;
