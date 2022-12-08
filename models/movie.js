@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const ERRORS_MESSAGES = require('../utils/ERRORS_MESSAGES');
 const { urlValidatorConfig } = require('../utils/utils');
 
 const { Schema } = mongoose;
@@ -32,7 +33,7 @@ const movieSchema = new Schema({
       validator(v) {
         return validator.isURL(v, urlValidatorConfig);
       },
-      message: 'Недопустимый формат ввода. Введите URL адрес',
+      message: ERRORS_MESSAGES.URL_REQUIRED,
     },
   },
   trailerLink: {
@@ -42,7 +43,7 @@ const movieSchema = new Schema({
       validator(v) {
         return validator.isURL(v, urlValidatorConfig);
       },
-      message: 'Недопустимый формат ввода. Введите URL адрес',
+      message: ERRORS_MESSAGES.URL_REQUIRED,
     },
   },
   thumbnail: {
@@ -52,7 +53,7 @@ const movieSchema = new Schema({
       validator(v) {
         return validator.isURL(v, urlValidatorConfig);
       },
-      message: 'Недопустимый формат ввода. Введите URL адрес',
+      message: ERRORS_MESSAGES.URL_REQUIRED,
     },
   },
   owner: {

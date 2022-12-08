@@ -1,6 +1,7 @@
 const validator = require('validator');
 const mongoose = require('mongoose');
 const { findUserBeCredentials } = require('../utils/utils');
+const ERRORS_MESSAGES = require('../utils/ERRORS_MESSAGES');
 
 const { Schema } = mongoose;
 
@@ -14,7 +15,7 @@ const userSchema = new Schema(
         validator(v) {
           return validator.isEmail(v);
         },
-        message: 'Пожалуйста введите адрес email',
+        message: ERRORS_MESSAGES.EMAIL_REQUIRED,
       },
     },
     password: {

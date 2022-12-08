@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const UnauthorizedError = require('./errors/UnauthorizedError');
+const { INCORRECT_CREDENTIALS } = require('./ERRORS_MESSAGES');
 
 const patchRequestOptions = {
   new: true,
@@ -29,10 +30,10 @@ function findUserBeCredentials(email, password) {
   return this.findOne({ email })
     .select('+password')
     .then((user) => {
-      if (!user) { throw new UnauthorizedError('Неправильная почта или пароль'); }
+      if (!user) { throw new UnauthorizedError(INCORRECT_CREDENTIALS); }
       return bcrypt.compare(password, user.password)
         .then((match) => {
-          if (!match) { throw new UnauthorizedError('Неправильная почта или пароль'); }
+          if (!match) { throw new UnauthorizedError(INCORRECT_CREDENTIALS); }
           return user;
         });
     });
