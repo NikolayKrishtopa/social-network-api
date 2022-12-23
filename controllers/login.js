@@ -18,7 +18,7 @@ module.exports.login = (req, res, next) => {
           // secure: true,
         })
         .status(200)
-        .send([TOKEN_ENCRYPT_KEY, token]);
+        .send(user);
       Ы;
     })
     .catch(next);
