@@ -1,7 +1,7 @@
-const validator = require('validator');
-const mongoose = require('mongoose');
-const { findUserBeCredentials } = require('../utils/utils');
-const ERRORS_MESSAGES = require('../utils/ERRORS_MESSAGES');
+const validator = require("validator");
+const mongoose = require("mongoose");
+const { findUserBeCredentials } = require("../utils/utils");
+const ERRORS_MESSAGES = require("../utils/ERRORS_MESSAGES");
 
 const { Schema } = mongoose;
 
@@ -33,9 +33,9 @@ const userSchema = new Schema(
   {
     toObject: { useProjection: true },
     toJSON: { useProjection: true },
-  },
+  }
 );
 
 userSchema.statics.findUserByCredentials = findUserBeCredentials;
 
-module.exports = mongoose.model('user', userSchema);
+module.exports = mongoose.model("user", userSchema);

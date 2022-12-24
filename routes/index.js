@@ -8,6 +8,7 @@ const auth = require("../middlewares/auth");
 const NotFoundError = require("../utils/errors/NotFoundError");
 const ERRORS_MESSAGES = require("../utils/ERRORS_MESSAGES");
 const userBodyValidatorForLogin = require("../middlewares/requestValidators/userBodyValidatorForLogin");
+const checkEmailOccupied = require("../middlewares/checkEmailOccupied");
 
 router.post("/signin", userBodyValidatorForLogin, login);
 router.delete("/signout", logout);

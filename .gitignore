@@ -15,5 +15,7 @@ node_modules
 .idea
 .vscode
 
+.env
+
 #log files
 *.log
