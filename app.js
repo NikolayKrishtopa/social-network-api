@@ -14,7 +14,7 @@ const DB_ADDRESS = require("./utils/DB_ADDRESS");
 const { PORT = 3001, mongo = DB_ADDRESS } = process.env;
 const app = express();
 
-mongoose.connect(mongo);
+mongoose.connect(mongo, { family: 4 });
 
 app.use(requestLogger);
 
