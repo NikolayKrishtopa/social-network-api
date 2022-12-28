@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const TOKEN_ENCRYPT_KEY = require("../utils/key");
 const User = require("../models/user");
 const ERRORS_MESSAGES = require("../utils/ERRORS_MESSAGES");
+const { NODE_ENV } = process.env;
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
@@ -11,15 +12,20 @@ module.exports.login = (req, res, next) => {
         expiresIn: "7d",
       });
       res
-        .cookie("jwt", token, {
-          maxAge: 60 * 60 * 24 * 7000,
-          httpOnly: true,
-          sameSite: "None",
-          // secure: true,
-        })
+        .cookie(
+          "jwt",
+          token,
+          NODE_ENV === "production"
+            ? {
+                maxAge: 60 * 60 * 24 * 7000,
+                httpOnly: true,
+                sameSite: "None",
+                secure: true,
+              }
+            : { maxAge: 60 * 60 * 24 * 7000 }
+        )
         .status(200)
         .send(user);
-      Ы;
     })
     .catch(next);
 };
