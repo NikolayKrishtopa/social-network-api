@@ -41,6 +41,10 @@ const userSchema = new Schema(
       minlength: 2,
       maxlength: 30,
     },
+    friends: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'user',
+    }],
     avatar: {
       type: String,
       default: 'https://cs12.pikabu.ru/post_img/2022/10/24/2/1666571824193118478.webp',

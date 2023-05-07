@@ -75,3 +75,52 @@ module.exports.searchUser = (req, res, next) => {
     .then((user) => res.send(user))
     .catch(next);
 };
+module.exports.addToFriendsById = (req, res, next) => {
+  User.findByIdAndUpdate(
+    req.user._id,
+    { $addToSet: { friends: req.params.userId } },
+    patchRequestOptions,
+  ).then((user) => {
+    if (!user) {
+      throw new NotFoundError(ERRORS_MESSAGES.NOT_FOUND);
+    } else {
+      res.send(user);
+    }
+  })
+    .catch((err) => {
+      if (err instanceof mongoose.Error.ValidationError) {
+        next(new ValidationError(ERRORS_MESSAGES.CHECK_REQ_DATA));
+        return;
+      }
+      if (err instanceof mongoose.Error.CastError) {
+        next(new ValidationError(ERRORS_MESSAGES.NOT_FOUND));
+        return;
+      }
+      next(err);
+    });
+};
+
+module.exports.removeFromFriendsById = (req, res, next) => {
+  User.findByIdAndUpdate(
+    req.user._id,
+    { $pull: { friends: req.params.userId } },
+    patchRequestOptions,
+  ).then((user) => {
+    if (!user) {
+      throw new NotFoundError(ERRORS_MESSAGES.NOT_FOUND);
+    } else {
+      res.send(user);
+    }
+  })
+    .catch((err) => {
+      if (err instanceof mongoose.Error.ValidationError) {
+        next(new ValidationError(ERRORS_MESSAGES.CHECK_REQ_DATA));
+        return;
+      }
+      if (err instanceof mongoose.Error.CastError) {
+        next(new ValidationError(ERRORS_MESSAGES.NOT_FOUND));
+        return;
+      }
+      next(err);
+    });
+};

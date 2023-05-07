@@ -53,6 +53,7 @@ module.exports.removePostById = (req, res, next) => {
       next(err);
     });
 };
+
 module.exports.likePostById = (req, res, next) => {
   Post.findByIdAndUpdate(
     req.params.postId,
