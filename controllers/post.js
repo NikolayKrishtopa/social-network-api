@@ -7,9 +7,15 @@ const { patchRequestOptions } = require('../utils/utils');
 const Post = require('../models/post');
 const ERRORS_MESSAGES = require('../utils/ERRORS_MESSAGES');
 
-module.exports.getUserPosts = (req, res, next) => {
+module.exports.getMyPosts = (req, res, next) => {
   const { _id } = req.user;
   Post.find({ owner: _id })
+    .then((posts) => res.send(posts))
+    .catch(next);
+};
+
+module.exports.getFriendsPosts = (req, res, next) => {
+  Post.find({ owner: { $in: req?.user?.friends } })
     .then((posts) => res.send(posts))
     .catch(next);
 };
