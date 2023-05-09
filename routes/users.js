@@ -1,21 +1,23 @@
 const routerUsers = require('express').Router();
 const {
   updateProfile, getMyProfile, getUsers, searchUser, getUserProfile,
-  addToFriendsById, removeFromFriendsById,
+  addToFriendsById, removeFromFriendsById, getFriends,
 } = require('../controllers/users');
 const checkEmailOccupied = require('../middlewares/checkEmailOccupied');
 
-const userDataValidator = require('../middlewares/requestValidators/userDataValidator');
+const userBodyValidator = require('../middlewares/requestValidators/userBodyValidator');
 
 routerUsers.get('/', getUsers);
 
-routerUsers.get('/:search', searchUser);
-
-routerUsers.get('/:id', getUserProfile);
+routerUsers.get('/friends', getFriends);
 
 routerUsers.get('/me', getMyProfile);
 
-routerUsers.patch('/me', userDataValidator, checkEmailOccupied, updateProfile);
+routerUsers.get('/search/:search', searchUser);
+
+routerUsers.get('/:userId', getUserProfile);
+
+routerUsers.patch('/me', userBodyValidator, checkEmailOccupied, updateProfile);
 
 routerUsers.put('/:userId/connect', addToFriendsById);
 

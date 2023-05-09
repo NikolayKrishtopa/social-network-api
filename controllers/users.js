@@ -11,11 +11,11 @@ const ERRORS_MESSAGES = require('../utils/ERRORS_MESSAGES');
 
 module.exports.createUser = (req, res, next) => {
   const {
-    name, email, password, city, college,
+    name, email, password, city, college, gender, status,
   } = req.body;
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
-      name, email, password: hash, city, college,
+      name, email, password: hash, city, college, gender, status,
     }))
     .then((user) => res.send(user))
     .catch((err) => {
@@ -31,10 +31,10 @@ module.exports.createUser = (req, res, next) => {
 
 module.exports.updateProfile = (req, res, next) => {
   const {
-    name, email, city, college,
+    name, email, city, college, gender, status, password,
   } = req.body;
   User.findByIdAndUpdate(req.user._id, {
-    name, email, city, college,
+    name, email, city, college, gender, status, password,
   }, patchRequestOptions)
     .then((user) => {
       if (!user) {
@@ -60,16 +60,27 @@ module.exports.getMyProfile = (req, res, next) => {
 };
 
 module.exports.getUserProfile = (req, res, next) => {
-  User.findById(req.params.id)
+  User.findById(req.params.userId)
     .then((user) => res.send(user))
     .catch(next);
 };
 
 module.exports.getUsers = (req, res, next) => {
   User.find()
-    .then((user) => res.send(user))
+    .then((users) => res.send(users))
     .catch(next);
 };
+
+module.exports.getFriends = (req, res, next) => {
+  User.findById(req.user._id).then(
+    (user) => {
+      User.find({ _id: { $in: user?.friends } })
+        .then((friends) => res.send(friends))
+        .catch(next);
+    },
+  );
+};
+
 module.exports.searchUser = (req, res, next) => {
   User.findOne({ name: req.params.search })
     .then((user) => res.send(user))

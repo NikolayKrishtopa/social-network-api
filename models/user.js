@@ -55,6 +55,16 @@ const userSchema = new Schema(
         message: 'Недопустимый формат ввода. Введите URL адрес',
       },
     },
+    status: {
+      type: String,
+      default: 'Hi!',
+    },
+    gender: {
+      type: String,
+      required: true,
+      minlength: 2,
+      maxlength: 30,
+    },
   },
   {
     toObject: { useProjection: true },

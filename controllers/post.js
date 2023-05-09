@@ -5,6 +5,7 @@ const NotAllowedError = require('../utils/errors/NotAllowedError');
 const { patchRequestOptions } = require('../utils/utils');
 
 const Post = require('../models/post');
+const User = require('../models/user');
 const ERRORS_MESSAGES = require('../utils/ERRORS_MESSAGES');
 
 module.exports.getMyPosts = (req, res, next) => {
@@ -14,10 +15,26 @@ module.exports.getMyPosts = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.getFriendsPosts = (req, res, next) => {
-  Post.find({ owner: { $in: req?.user?.friends } })
+module.exports.getUsersPosts = (req, res, next) => {
+  Post.find({ owner: req.params.userId })
     .then((posts) => res.send(posts))
     .catch(next);
+};
+
+module.exports.getAllPosts = (req, res, next) => {
+  Post.find()
+    .then((posts) => res.send(posts))
+    .catch(next);
+};
+
+module.exports.getFriendsPosts = (req, res, next) => {
+  User.findById(req.user._id).then(
+    (user) => {
+      Post.find({ owner: { $in: user?.friends } })
+        .then((posts) => res.send(posts))
+        .catch(next);
+    },
+  );
 };
 
 module.exports.createPost = (req, res, next) => {
