@@ -28,35 +28,31 @@ module.exports.getAllPosts = (req, res, next) => {
 };
 
 module.exports.getFriendsPosts = (req, res, next) => {
-  User.findById(req.user._id).then(
-    (user) => {
-      Post.find({ owner: { $in: user?.friends } })
-        .then((posts) => res.send(posts))
-        .catch(next);
-    },
-  );
+  User.findById(req.user._id).then((user) => {
+    Post.find({ owner: { $in: user?.friends } })
+      .then((posts) => res.send(posts))
+      .catch(next);
+  });
 };
 
 module.exports.createPost = (req, res, next) => {
   const { _id } = req.user;
-  User.findById(req.user._id).then(
-    (user) => {
-      Post.create({
-        ...req.body,
-        owner: _id,
-        date: Date.now(),
-        ownerName: user.name,
+  User.findById(req.user._id).then((user) => {
+    Post.create({
+      ...req.body,
+      owner: _id,
+      date: Date.now(),
+      ownerName: user.name,
+    })
+      .then((post) => res.send(post))
+      .catch((err) => {
+        if (err instanceof mongoose.Error.ValidationError) {
+          next(new ValidationError(ERRORS_MESSAGES.CHECK_REQ_DATA));
+          return;
+        }
+        next(err);
       });
-    },
-  )
-    .then((post) => res.send(post))
-    .catch((err) => {
-      if (err instanceof mongoose.Error.ValidationError) {
-        next(new ValidationError(ERRORS_MESSAGES.CHECK_REQ_DATA));
-        return;
-      }
-      next(err);
-    });
+  });
 };
 module.exports.removePostById = (req, res, next) => {
   Post.findById(req.params.postId)
@@ -87,13 +83,14 @@ module.exports.likePostById = (req, res, next) => {
     req.params.postId,
     { $addToSet: { likes: req.user._id } },
     patchRequestOptions,
-  ).then((post) => {
-    if (!post) {
-      throw new NotFoundError(ERRORS_MESSAGES.NOT_FOUND);
-    } else {
-      res.send(post);
-    }
-  })
+  )
+    .then((post) => {
+      if (!post) {
+        throw new NotFoundError(ERRORS_MESSAGES.NOT_FOUND);
+      } else {
+        res.send(post);
+      }
+    })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         next(new ValidationError(ERRORS_MESSAGES.CHECK_REQ_DATA));
@@ -112,13 +109,14 @@ module.exports.unlikePostById = (req, res, next) => {
     req.params.postId,
     { $pull: { likes: req.user._id } },
     patchRequestOptions,
-  ).then((post) => {
-    if (!post) {
-      throw new NotFoundError(ERRORS_MESSAGES.NOT_FOUND);
-    } else {
-      res.send(post);
-    }
-  })
+  )
+    .then((post) => {
+      if (!post) {
+        throw new NotFoundError(ERRORS_MESSAGES.NOT_FOUND);
+      } else {
+        res.send(post);
+      }
+    })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         next(new ValidationError(ERRORS_MESSAGES.CHECK_REQ_DATA));
