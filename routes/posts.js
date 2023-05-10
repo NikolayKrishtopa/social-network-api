@@ -1,8 +1,13 @@
 const routerMovies = require('express').Router();
 const {
   getMyPosts,
-  createPost, getFriendsPosts, getAllPosts,
-  removePostById, likePostById, unlikePostById, getUsersPosts,
+  createPost,
+  getFriendsPosts,
+  getAllPosts,
+  removePostById,
+  likePostById,
+  unlikePostById,
+  getUsersPosts,
 } = require('../controllers/post');
 
 const postBodyValidator = require('../middlewares/requestValidators/postBodyValidator');
@@ -14,14 +19,14 @@ routerMovies.get('/my', getMyPosts);
 
 routerMovies.post('/', postBodyValidator, createPost);
 
+routerMovies.get('/friends', getFriendsPosts);
+
 routerMovies.delete('/:postId', postParamsValidator, removePostById);
 
 routerMovies.get('/:userId', getUsersPosts);
 
-routerMovies.put('/:postId/likes', postParamsValidator, likePostById);
+routerMovies.put('/:postId/like', postParamsValidator, likePostById);
 
-routerMovies.delete('/:postId/likes', postParamsValidator, unlikePostById);
-
-routerMovies.get('/friends', getFriendsPosts);
+routerMovies.delete('/:postId/like', postParamsValidator, unlikePostById);
 
 module.exports = routerMovies;

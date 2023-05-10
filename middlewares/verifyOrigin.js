@@ -1,16 +1,10 @@
 const allowedCors = [
   'http://movies.nikolaykrishtopa.nomoredomains.club',
   'https://movies.nikolaykrishtopa.nomoredomains.club',
-  'movies.nikolaykrishtopa.nomoredomains.club',
   'http://localhost:3000',
-  'https://localhost:3000',
   'http://localhost:3001',
-  'https://localhost:3001',
-  'https://localhost:8080',
   'http://localhost:8080',
-  'localhost:3001',
-  'localhost:3001',
-  'localhost:8080',
+  'https://nikolaykrishtopa.github.io/',
 ];
 
 const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';

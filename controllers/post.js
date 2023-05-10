@@ -39,11 +39,16 @@ module.exports.getFriendsPosts = (req, res, next) => {
 
 module.exports.createPost = (req, res, next) => {
   const { _id } = req.user;
-
-  Post.create({
-    ...req.body,
-    owner: _id,
-  })
+  User.findById(req.user._id).then(
+    (user) => {
+      Post.create({
+        ...req.body,
+        owner: _id,
+        date: Date.now(),
+        ownerName: user.name,
+      });
+    },
+  )
     .then((post) => res.send(post))
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {

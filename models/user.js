@@ -47,7 +47,7 @@ const userSchema = new Schema(
     }],
     avatar: {
       type: String,
-      default: 'https://cs12.pikabu.ru/post_img/2022/10/24/2/1666571824193118478.webp',
+      default: 'https://gnatkovsky.com.ua/wp-content/uploads/2015/02/130220152333-180x180.jpg',
       validate: {
         validator(v) {
           return validator.isURL(v, urlValidatorConfig);

@@ -10,6 +10,10 @@ const postSchema = new Schema({
     type: String,
     required: true,
   },
+  date: {
+    type: Date,
+    required: true,
+  },
   image: {
     type: String,
     validate: {
@@ -22,6 +26,10 @@ const postSchema = new Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
+    required: true,
+  },
+  ownerName: {
+    type: String,
     required: true,
   },
   likes: [{

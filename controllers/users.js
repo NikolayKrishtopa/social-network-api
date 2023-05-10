@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const ValidationError = require('../utils/errors/ValidationError');
 const NotFoundError = require('../utils/errors/NotFoundError');
+const NotAllowedError = require('../utils/errors/NotAllowedError');
 const UserExistError = require('../utils/errors/ExistError');
 
 const User = require('../models/user');
@@ -66,7 +67,7 @@ module.exports.getUserProfile = (req, res, next) => {
 };
 
 module.exports.getUsers = (req, res, next) => {
-  User.find()
+  User.find({ _id: { $ne: req.user._id } })
     .then((users) => res.send(users))
     .catch(next);
 };
@@ -87,6 +88,7 @@ module.exports.searchUser = (req, res, next) => {
     .catch(next);
 };
 module.exports.addToFriendsById = (req, res, next) => {
+  if (req.user._id === req.params.userId) throw new NotAllowedError('С самим собой неинтересно');
   User.findByIdAndUpdate(
     req.user._id,
     { $addToSet: { friends: req.params.userId } },
