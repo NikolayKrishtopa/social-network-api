@@ -83,7 +83,7 @@ module.exports.getFriends = (req, res, next) => {
 };
 
 module.exports.searchUser = (req, res, next) => {
-  User.findOne({ name: req.params.search })
+  User.find({ name: req.params.search })
     .then((user) => res.send(user))
     .catch(next);
 };

@@ -11,26 +11,26 @@ const ERRORS_MESSAGES = require('../utils/ERRORS_MESSAGES');
 module.exports.getMyPosts = (req, res, next) => {
   const { _id } = req.user;
   Post.find({ owner: _id })
-    .then((posts) => res.send(posts))
+    .then((posts) => res.send(posts.reverse()))
     .catch(next);
 };
 
 module.exports.getUsersPosts = (req, res, next) => {
   Post.find({ owner: req.params.userId })
-    .then((posts) => res.send(posts))
+    .then((posts) => res.send(posts.reverse()))
     .catch(next);
 };
 
 module.exports.getAllPosts = (req, res, next) => {
   Post.find()
-    .then((posts) => res.send(posts))
+    .then((posts) => res.send(posts.reverse()))
     .catch(next);
 };
 
 module.exports.getFriendsPosts = (req, res, next) => {
   User.findById(req.user._id).then((user) => {
     Post.find({ owner: { $in: user?.friends } })
-      .then((posts) => res.send(posts))
+      .then((posts) => res.send(posts.reverse()))
       .catch(next);
   });
 };
