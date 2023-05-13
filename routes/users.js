@@ -1,7 +1,13 @@
 const routerUsers = require('express').Router();
 const {
-  updateProfile, getMyProfile, getUsers, searchUser, getUserProfile,
-  addToFriendsById, removeFromFriendsById, getFriends,
+  updateProfile,
+  getMyProfile,
+  getUsers,
+  searchUser,
+  getUserProfile,
+  addToFriendsById,
+  removeFromFriendsById,
+  getFriends,
 } = require('../controllers/users');
 const checkEmailOccupied = require('../middlewares/checkEmailOccupied');
 

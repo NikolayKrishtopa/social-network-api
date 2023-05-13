@@ -12,11 +12,17 @@ const ERRORS_MESSAGES = require('../utils/ERRORS_MESSAGES');
 
 module.exports.createUser = (req, res, next) => {
   const {
-    name, email, password, city, college, gender, status,
+    name, email, password, city, college, gender,
   } = req.body;
-  bcrypt.hash(password, 10)
+  bcrypt
+    .hash(password, 10)
     .then((hash) => User.create({
-      name, email, password: hash, city, college, gender, status,
+      name,
+      email,
+      password: hash,
+      city,
+      college,
+      gender,
     }))
     .then((user) => res.send(user))
     .catch((err) => {
@@ -32,11 +38,21 @@ module.exports.createUser = (req, res, next) => {
 
 module.exports.updateProfile = (req, res, next) => {
   const {
-    name, email, city, college, gender, status, password,
+    name, email, city, college, gender, password, avatar,
   } = req.body;
-  User.findByIdAndUpdate(req.user._id, {
-    name, email, city, college, gender, status, password,
-  }, patchRequestOptions)
+  User.findByIdAndUpdate(
+    req.user._id,
+    {
+      name,
+      email,
+      city,
+      college,
+      gender,
+      password,
+      avatar,
+    },
+    patchRequestOptions,
+  )
     .then((user) => {
       if (!user) {
         throw new NotFoundError(ERRORS_MESSAGES.CHECK_REQ_DATA);
@@ -73,13 +89,11 @@ module.exports.getUsers = (req, res, next) => {
 };
 
 module.exports.getFriends = (req, res, next) => {
-  User.findById(req.user._id).then(
-    (user) => {
-      User.find({ _id: { $in: user?.friends } })
-        .then((friends) => res.send(friends))
-        .catch(next);
-    },
-  );
+  User.findById(req.user._id).then((user) => {
+    User.find({ _id: { $in: user?.friends } })
+      .then((friends) => res.send(friends))
+      .catch(next);
+  });
 };
 
 module.exports.searchUser = (req, res, next) => {
@@ -88,18 +102,19 @@ module.exports.searchUser = (req, res, next) => {
     .catch(next);
 };
 module.exports.addToFriendsById = (req, res, next) => {
-  if (req.user._id === req.params.userId) throw new NotAllowedError('С самим собой неинтересно');
+  if (req.user._id === req.params.userId) { throw new NotAllowedError('С самим собой неинтересно'); }
   User.findByIdAndUpdate(
     req.user._id,
     { $addToSet: { friends: req.params.userId } },
     patchRequestOptions,
-  ).then((user) => {
-    if (!user) {
-      throw new NotFoundError(ERRORS_MESSAGES.NOT_FOUND);
-    } else {
-      res.send(user);
-    }
-  })
+  )
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError(ERRORS_MESSAGES.NOT_FOUND);
+      } else {
+        res.send(user);
+      }
+    })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         next(new ValidationError(ERRORS_MESSAGES.CHECK_REQ_DATA));
@@ -118,13 +133,14 @@ module.exports.removeFromFriendsById = (req, res, next) => {
     req.user._id,
     { $pull: { friends: req.params.userId } },
     patchRequestOptions,
-  ).then((user) => {
-    if (!user) {
-      throw new NotFoundError(ERRORS_MESSAGES.NOT_FOUND);
-    } else {
-      res.send(user);
-    }
-  })
+  )
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError(ERRORS_MESSAGES.NOT_FOUND);
+      } else {
+        res.send(user);
+      }
+    })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         next(new ValidationError(ERRORS_MESSAGES.CHECK_REQ_DATA));
