@@ -12,7 +12,7 @@ const ERRORS_MESSAGES = require('../utils/ERRORS_MESSAGES');
 
 module.exports.createUser = (req, res, next) => {
   const {
-    name, email, password, city, college, gender,
+    name, email, password, city, college, gender, avatar,
   } = req.body;
   bcrypt
     .hash(password, 10)
@@ -23,6 +23,7 @@ module.exports.createUser = (req, res, next) => {
       city,
       college,
       gender,
+      avatar,
     }))
     .then((user) => res.send(user))
     .catch((err) => {
