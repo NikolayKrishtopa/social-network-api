@@ -56,22 +56,21 @@ module.exports.updateProfile = (req, res, next) => {
           avatar,
         },
         patchRequestOptions,
-      );
-    })
-    .then((user) => {
-      if (!user) {
-        throw new NotFoundError(ERRORS_MESSAGES.CHECK_REQ_DATA);
-      }
-      res.send(user);
-    })
-    .catch((err) => {
-      if (err instanceof mongoose.Error.ValidationError) {
-        next(new ValidationError(ERRORS_MESSAGES.CHECK_REQ_DATA));
-      } else if (err instanceof mongoose.Error.CastError) {
-        next(new ValidationError(ERRORS_MESSAGES.NOT_FOUND));
-      } else {
-        next(err);
-      }
+      ).then((user) => {
+        if (!user) {
+          throw new NotFoundError(ERRORS_MESSAGES.CHECK_REQ_DATA);
+        }
+        res.send(user);
+      })
+        .catch((err) => {
+          if (err instanceof mongoose.Error.ValidationError) {
+            next(new ValidationError(ERRORS_MESSAGES.CHECK_REQ_DATA));
+          } else if (err instanceof mongoose.Error.CastError) {
+            next(new ValidationError(ERRORS_MESSAGES.NOT_FOUND));
+          } else {
+            next(err);
+          }
+        });
     });
 };
 
