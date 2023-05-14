@@ -41,19 +41,23 @@ module.exports.updateProfile = (req, res, next) => {
   const {
     name, email, city, college, gender, password, avatar,
   } = req.body;
-  User.findByIdAndUpdate(
-    req.user._id,
-    {
-      name,
-      email,
-      city,
-      college,
-      gender,
-      password,
-      avatar,
-    },
-    patchRequestOptions,
-  )
+  bcrypt
+    .hash(password, 10)
+    .then((hash) => {
+      User.findByIdAndUpdate(
+        req.user._id,
+        {
+          name,
+          email,
+          city,
+          college,
+          gender,
+          password: hash,
+          avatar,
+        },
+        patchRequestOptions,
+      );
+    })
     .then((user) => {
       if (!user) {
         throw new NotFoundError(ERRORS_MESSAGES.CHECK_REQ_DATA);
