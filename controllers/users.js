@@ -23,7 +23,7 @@ module.exports.createUser = (req, res, next) => {
       city,
       college,
       gender,
-      avatar,
+      avatar: avatar || 'https://gnatkovsky.com.ua/wp-content/uploads/2015/02/130220152333-180x180.jpg',
     }))
     .then((user) => res.send(user))
     .catch((err) => {
@@ -53,7 +53,7 @@ module.exports.updateProfile = (req, res, next) => {
           college,
           gender,
           password: hash,
-          avatar,
+          avatar: avatar || 'https://gnatkovsky.com.ua/wp-content/uploads/2015/02/130220152333-180x180.jpg',
         },
         patchRequestOptions,
       ).then((user) => {

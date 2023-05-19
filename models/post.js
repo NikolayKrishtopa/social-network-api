@@ -15,10 +15,10 @@ const postSchema = new Schema({
     required: true,
   },
   image: {
-    type: String,
+    type: mongoose.Mixed,
     validate: {
       validator(v) {
-        return validator.isURL(v, urlValidatorConfig);
+        return v === null || validator.isURL(v, urlValidatorConfig);
       },
       message: ERRORS_MESSAGES.URL_REQUIRED,
     },

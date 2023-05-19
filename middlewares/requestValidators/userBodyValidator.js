@@ -10,6 +10,6 @@ module.exports = celebrate({
     gender: Joi.string().required(),
     city: Joi.string().required(),
     college: Joi.string().required(),
-    avatar: Joi.string().custom(validateURL),
+    avatar: Joi.custom(validateURL),
   }),
 });
